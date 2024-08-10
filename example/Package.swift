@@ -14,10 +14,11 @@ let package = Package(
             name: "Module",
             type: .dynamic,
             targets: ["MyExample"]
-        )
+        ),
     ],
     dependencies: [
         .package(path: "node_modules/node-swift")
+
     ],
     targets: [
         .target(

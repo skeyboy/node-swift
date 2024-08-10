@@ -33,6 +33,17 @@ console.log(str); // NodeSwift! NodeSwift! NodeSwift!
 console.log(add(5, 10)); // 5.0 + 10.0 = 15.0
 ```
 
+
+**the MyModule.node from Package product dynamic libray name**
+```swift
+ .library(
+            name: "MyModule",
+            type: .dynamic,
+            targets: ["MyExample"]
+        ),
+```
+
+
 ## Features
 
 - **Safe**: NodeSwift makes use of Swift's memory safety and automatic reference counting. This means that, unlike with the C-based Node-API, you never have to think about memory management while writing NodeSwift modules.

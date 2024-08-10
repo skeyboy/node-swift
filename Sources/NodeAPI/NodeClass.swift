@@ -244,18 +244,28 @@ extension NodeProperty {
         get: @escaping (T) -> @NodeActor () throws -> NodeValueConvertible,
         set: ((T) -> @NodeActor (NodeValue) throws -> Void)? = nil
     ) {
-        self.init(
-            attributes: attributes, 
-            get: { try get(T.from(args: $0))() },
-            set: set.map { setter in
-                { args in
-                    guard args.count == 1 else {
-                        throw NodeAPIError(.invalidArg, message: "Expected 1 argument to setter, got \(args.count)")
-                    }
-                    try setter(T.from(args: args))(args[0])
+        self.init(attributes: attributes, get:{ value in
+            return try get(T.from(args: value))()
+        }) { args in
+            try set.map { setter in
+                guard args.count == 1, let firstArg = args.first else {
+                    throw NodeAPIError(.invalidArg, message: "Expected 1 argument to setter, got \(args.count)")
                 }
+                try setter(T.from(args: args))(firstArg)
             }
-        )
+        }
+//        self.init(
+//            attributes: attributes, 
+//            get: { try get(T.from(args: $0))() },
+//            set: set.map { setter in
+//                { args in
+//                    guard args.count == 1 else {
+//                        throw NodeAPIError(.invalidArg, message: "Expected 1 argument to setter, got \(args.count)")
+//                    }
+//                    try setter(T.from(args: args))(args[0])
+//                }
+//            }
+//        )
     }
 
     public init<T: NodeClass, U: NodeValueConvertible>(
